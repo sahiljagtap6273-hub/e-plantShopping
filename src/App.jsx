@@ -1,49 +1,66 @@
-
 import React, { useState } from 'react';
-import ProductList from './ProductList';
 import './App.css';
-import AboutUs from './AboutUs';
+import ProductList from './components/ProductList';
+import CartItem from './components/CartItem';
+import AboutUs from './components/AboutUs';
 
-function App() {
-  
+const App = () => {
   const [showProductList, setShowProductList] = useState(false);
+  const [showCart, setShowCart] = useState(false);
 
-  const handleGetStartedClick = () => {
+  const handleGetStarted = () => {
     setShowProductList(true);
   };
 
-  const handleHomeClick = () => {
+  const handleHome = () => {
     setShowProductList(false);
+    setShowCart(false);
   };
 
-  return (
-    <div className="app-container">
-      <div className={`landing-page ${showProductList ? 'fade-out' : ''}`}>
-        <div className="background-image"></div>
-        <div className="content">
-         <div className="landing_content">
-         <h1>Welcome To Paradise Nursery</h1>
-          <div className="divider"></div>
-          <p>Where Green Meets Serenity</p>
-         
-          <button className="get-started-button" onClick={handleGetStartedClick}>
-            Get Started
-          </button>
-         </div>
-          <div className="aboutus_container">
-          <AboutUs/>
-          </div>
-          </div>
+  const handleCartClick = () => {
+    setShowCart(true);
+  };
 
+  const handleContinueShopping = () => {
+    setShowCart(false);
+    setShowProductList(true);
+  };
+
+  if (!showProductList && !showCart) {
+    return (
+      <div className="landing-page">
+        <h1>Paradise Nursery</h1>
+        <p>Where green meets serenity</p>
+        <button className="get-started-btn" onClick={handleGetStarted}>
+          Get Started
+        </button>
+        <div style={{ marginTop: '40px' }}>
+          <AboutUs />
+        </div>
       </div>
-      <div className={`product-list-container ${showProductList ? 'visible' : ''}`}>
-        <ProductList onHomeClick={handleHomeClick}/>
-      </div>
+    );
+  }
+
+  return (
+    <div>
+      <nav className="navbar">
+        <a href="#" onClick={handleHome}>Paradise Nursery</a>
+        <div>
+          <a href="#" onClick={handleHome}>Home</a>
+          <a href="#" onClick={handleGetStarted}>Plants</a>
+          <a href="#" onClick={handleCartClick} className="cart-icon">
+            Cart
+          </a>
+        </div>
+      </nav>
+
+      {showCart ? (
+        <CartItem onContinueShopping={handleContinueShopping} />
+      ) : (
+        <ProductList onCartClick={handleCartClick} />
+      )}
     </div>
   );
-}
+};
 
 export default App;
-
-
-
